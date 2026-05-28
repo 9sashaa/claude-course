@@ -86,6 +86,30 @@ src/
 - Each slice exposes a single `index.ts` public API; never import from internal paths of another slice.
 - `app/` route files import from `features/` only — they are thin composition roots.
 
+## Branching (GitHub Flow)
+
+This project uses **GitHub Flow** — one long-lived branch (`main`), all work in short-lived feature branches.
+
+### Rules
+- `main` is always deployable — never commit directly to it.
+- Branch from `main`, merge back to `main` via Pull Request.
+- Branch naming: `<type>/<short-description>` — mirrors the commit type.
+
+| Prefix | When to use |
+| --- | --- |
+| `feat/` | New feature (`feat/dashboard-screen`) |
+| `fix/` | Bug fix (`fix/auth-redirect`) |
+| `refactor/` | Refactoring (`refactor/transactions-module`) |
+| `chore/` | Tooling, deps, config (`chore/update-deps`) |
+
+### Workflow
+1. `git checkout main && git pull` — always start from fresh `main`.
+2. `git checkout -b feat/<name>` — create a focused feature branch.
+3. Commit small, logical units following the commit convention below.
+4. Push branch and open a Pull Request against `main`.
+5. After review and CI pass — squash-merge or merge into `main`.
+6. Delete the feature branch after merge.
+
 ## Commit convention
 
 This project uses **Conventional Commits**: `<type>(<scope>): <description>`
