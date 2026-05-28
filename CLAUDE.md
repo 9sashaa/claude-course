@@ -86,6 +86,62 @@ src/
 - Each slice exposes a single `index.ts` public API; never import from internal paths of another slice.
 - `app/` route files import from `features/` only — they are thin composition roots.
 
+## Branching (GitHub Flow)
+
+This project uses **GitHub Flow** — one long-lived branch (`main`), all work in short-lived feature branches.
+
+### Rules
+- `main` is always deployable — never commit directly to it.
+- Branch from `main`, merge back to `main` via Pull Request.
+- Branch naming: `<type>/<short-description>` — mirrors the commit type.
+
+| Prefix | When to use |
+| --- | --- |
+| `feat/` | New feature (`feat/dashboard-screen`) |
+| `fix/` | Bug fix (`fix/auth-redirect`) |
+| `refactor/` | Refactoring (`refactor/transactions-module`) |
+| `chore/` | Tooling, deps, config (`chore/update-deps`) |
+
+### Workflow
+1. `git checkout main && git pull` — always start from fresh `main`.
+2. `git checkout -b feat/<name>` — create a focused feature branch.
+3. Commit small, logical units following the commit convention below.
+4. Push branch and open a Pull Request against `main`.
+5. After review and CI pass — squash-merge or merge into `main`.
+6. Delete the feature branch after merge.
+
+### Pull Request structure
+
+**Title** follows Conventional Commits: `feat(scope): short description` (≤ 70 chars, lowercase, no period).
+
+**Body template:**
+
+```
+## What & Why
+<1-3 sentences: what problem this solves and why now>
+
+## Changes
+- <bullet: what was added/changed, focus on behaviour not files>
+
+## API endpoints consumed / added
+| Method | Path | Description |
+| ------ | ---- | ----------- |
+| GET    | /example | ... |
+
+## Test plan
+- [ ] Step to verify the golden path
+- [ ] Edge case to check
+- [ ] Regression: existing feature still works
+
+🤖 Generated with [Claude Code](https://claude.com/claude-code)
+```
+
+**Rules:**
+- One PR per logical feature — don't mix unrelated changes.
+- Link related issues: `Closes #<n>` in the body.
+- Keep the PR reviewable: prefer ≤ 400 changed lines; split larger work.
+- PR title must pass the same Conventional Commits lint as commit messages.
+
 ## Commit convention
 
 This project uses **Conventional Commits**: `<type>(<scope>): <description>`
