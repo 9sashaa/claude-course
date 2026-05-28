@@ -1,23 +1,5 @@
 // Types and contracts shared between the web and api apps.
 
-export interface ExpenseDto {
-  id: string;
-  amount: number;
-  currency: string;
-  description: string | null;
-  spentAt: string;
-  categoryId: string | null;
-  userId: string;
-}
-
-export interface CreateExpenseInput {
-  amount: number;
-  currency?: string;
-  description?: string;
-  spentAt?: string;
-  categoryId?: string;
-}
-
 export interface CategoryDto {
   id: string;
   name: string;
@@ -61,4 +43,53 @@ export interface LoginInput {
 export interface AuthResponseDto {
   accessToken: string;
   user: UserDto;
+}
+
+export type TransactionType = 'INCOME' | 'EXPENSE';
+
+export interface TransactionDto {
+  id: string;
+  amount: number;
+  type: TransactionType;
+  description: string | null;
+  date: string;
+  categoryId: string;
+  userId: string;
+  createdAt: string;
+}
+
+export interface CreateTransactionInput {
+  amount: number;
+  type: TransactionType;
+  description?: string;
+  date: string;
+  categoryId: string;
+}
+
+export interface UpdateTransactionInput {
+  amount?: number;
+  type?: TransactionType;
+  description?: string | null;
+  date?: string;
+  categoryId?: string;
+}
+
+export interface TransactionListQuery {
+  dateFrom?: string;
+  dateTo?: string;
+  type?: TransactionType;
+  categoryId?: string;
+}
+
+export interface TransactionSummaryDto {
+  month: number;
+  year: number;
+  totalIncome: number;
+  totalExpense: number;
+  net: number;
+  byCategory: Array<{
+    categoryId: string;
+    type: TransactionType;
+    total: number;
+  }>;
 }

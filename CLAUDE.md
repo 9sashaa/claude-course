@@ -57,6 +57,53 @@ packages/shared/   Common types/DTOs only               (@expense-tracker/shared
 - App Router only — no `pages/` directory.
 - `next.config.ts` sets `transpilePackages: ['@expense-tracker/shared']` so the shared package is compiled by Next's bundler.
 - `frontend/tsconfig.json` uses `moduleResolution: Bundler` (Next.js requirement), overriding the base `NodeNext`.
+- UI components come from **shadcn/ui** (new-york style) with **Tailwind CSS v4**. Components live in `frontend/src/shared/ui/` and are written manually (not generated via CLI). Theme CSS variables are defined in `frontend/app/globals.css`.
+
+#### Feature Slice Design (FSD)
+The frontend follows FSD architecture. Source code lives in `frontend/src/` with these layers (top → bottom dependency direction):
+
+```
+app/              Next.js routing — thin page wrappers only, no business logic
+src/
+  features/       User-facing capabilities, each in its own slice
+    auth/
+      api/        API calls (authApi.ts)
+      model/      State/context (authContext.tsx)
+      ui/         React components (LoginForm, RegisterForm)
+      index.ts    Public API of the slice — import only from here
+  entities/       Business entities re-exported from @expense-tracker/shared
+    user/
+  shared/         Framework-agnostic reusable code
+    ui/           shadcn/ui components (button, input, card, form, label)
+    api/          Base fetch client (apiClient.ts)
+    config/       Constants (routes.ts)
+    lib/          Utilities (utils.ts → cn())
+```
+
+**FSD rules:**
+- Layers may only import from layers below them: `features` → `entities` → `shared`.
+- Cross-slice imports within the same layer are forbidden — use `shared` instead.
+- Each slice exposes a single `index.ts` public API; never import from internal paths of another slice.
+- `app/` route files import from `features/` only — they are thin composition roots.
+
+## Commit convention
+
+This project uses **Conventional Commits**: `<type>(<scope>): <description>`
+
+| Type | When to use |
+| --- | --- |
+| `feat` | New feature or endpoint |
+| `fix` | Bug fix |
+| `refactor` | Refactoring without behaviour change |
+| `chore` | Tooling, deps, config, migrations |
+| `docs` | Documentation only |
+| `test` | Adding or fixing tests |
+
+**Rules:**
+- Scope is optional but recommended for cross-cutting changes: `feat(auth):`, `fix(transactions):`.
+- Description in lowercase, imperative mood, no period: `feat: add transaction summary endpoint`.
+- One logical change per commit — don't mix features and fixes.
+- Group related files into one commit (e.g. schema + migration + module handler = one `feat` commit).
 
 ### Shared tsconfig
 `tsconfig.base.json` at repo root defines `strict`, `ES2022`, `NodeNext` defaults. Both apps extend it and selectively override — check each app's own `tsconfig.json` before assuming base settings apply.
