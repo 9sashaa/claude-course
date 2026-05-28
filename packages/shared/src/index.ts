@@ -21,6 +21,23 @@ export interface CreateExpenseInput {
 export interface CategoryDto {
   id: string;
   name: string;
+  color: string;
+  icon: string;
+  userId: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface CreateCategoryInput {
+  name: string;
+  color: string;
+  icon: string;
+}
+
+export interface UpdateCategoryInput {
+  name?: string;
+  color?: string;
+  icon?: string;
 }
 
 export interface UserDto {
