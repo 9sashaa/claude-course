@@ -36,7 +36,7 @@ import { useCreateTransaction } from '../model/useCreateTransaction';
 
 const schema = z.object({
   type: z.enum(['INCOME', 'EXPENSE']),
-  amount: z.coerce.number().positive('Сумма должна быть положительной'),
+  amount: z.number().positive('Сумма должна быть положительной'),
   categoryId: z.string().min(1, 'Выберите категорию'),
   description: z.string().optional(),
   date: z.string().min(1, 'Укажите дату'),
@@ -122,7 +122,15 @@ export function CreateTransactionDialog() {
                       step="0.01"
                       min="0"
                       placeholder="0.00"
-                      {...field}
+                      value={Number.isNaN(field.value) ? '' : field.value}
+                      onChange={(e) =>
+                        field.onChange(
+                          e.target.value === '' ? Number.NaN : Number(e.target.value),
+                        )
+                      }
+                      onBlur={field.onBlur}
+                      name={field.name}
+                      ref={field.ref}
                     />
                   </FormControl>
                   <FormMessage />

@@ -11,6 +11,7 @@ interface AuthContextValue {
   login: (data: AuthResponseDto) => void;
   logout: () => void;
   isAuthenticated: boolean;
+  isReady: boolean;
 }
 
 const AuthContext = createContext<AuthContextValue | null>(null);
@@ -18,6 +19,7 @@ const AuthContext = createContext<AuthContextValue | null>(null);
 export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [user, setUser] = useState<UserDto | null>(null);
   const [token, setToken] = useState<string | null>(null);
+  const [isReady, setIsReady] = useState(false);
 
   useEffect(() => {
     const stored = localStorage.getItem(TOKEN_KEY);
@@ -30,6 +32,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         localStorage.removeItem(TOKEN_KEY);
       }
     }
+    setIsReady(true);
   }, []);
 
   const login = (data: AuthResponseDto) => {
@@ -46,7 +49,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   return (
     <AuthContext.Provider
-      value={{ user, token, login, logout, isAuthenticated: !!token }}
+      value={{ user, token, login, logout, isAuthenticated: !!token, isReady }}
     >
       {children}
     </AuthContext.Provider>
