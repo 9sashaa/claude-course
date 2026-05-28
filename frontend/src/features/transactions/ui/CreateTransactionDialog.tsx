@@ -31,7 +31,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/src/shared/ui/select';
-import { useCategories } from '@/src/features/categories';
+import type { CategoryDto } from '@/src/entities/category';
 import { useCreateTransaction } from '../model/useCreateTransaction';
 
 const schema = z.object({
@@ -44,9 +44,12 @@ const schema = z.object({
 
 type FormValues = z.infer<typeof schema>;
 
-export function CreateTransactionDialog() {
+interface Props {
+  categories: CategoryDto[];
+}
+
+export function CreateTransactionDialog({ categories }: Props) {
   const [open, setOpen] = useState(false);
-  const { data: categories } = useCategories();
   const mutation = useCreateTransaction();
 
   const form = useForm<FormValues>({
@@ -151,7 +154,7 @@ export function CreateTransactionDialog() {
                       </SelectTrigger>
                     </FormControl>
                     <SelectContent>
-                      {(categories ?? []).map((c) => (
+                      {categories.map((c) => (
                         <SelectItem key={c.id} value={c.id}>
                           {c.icon} {c.name}
                         </SelectItem>
@@ -193,7 +196,9 @@ export function CreateTransactionDialog() {
 
             {mutation.isError && (
               <p className="text-sm text-destructive">
-                {(mutation.error as Error).message}
+                {mutation.error instanceof Error
+                  ? mutation.error.message
+                  : 'Произошла ошибка при сохранении'}
               </p>
             )}
 

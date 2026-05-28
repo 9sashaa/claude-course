@@ -5,18 +5,11 @@ import type { TransactionDto } from '@/src/entities/transaction';
 import type { CategoryDto } from '@/src/entities/category';
 import { Badge } from '@/src/shared/ui/badge';
 import { cn } from '@/src/shared/lib/utils';
+import { formatCurrency } from '@/src/shared/lib/formatCurrency';
 
 interface Props {
   transaction: TransactionDto;
   category?: CategoryDto;
-}
-
-function formatAmount(amount: number) {
-  return new Intl.NumberFormat('ru-RU', {
-    style: 'currency',
-    currency: 'RUB',
-    maximumFractionDigits: 2,
-  }).format(amount);
 }
 
 function formatDate(iso: string) {
@@ -64,7 +57,7 @@ export function TransactionItem({ transaction, category }: Props) {
         )}
       >
         {isIncome ? '+' : '−'}
-        {formatAmount(transaction.amount)}
+        {formatCurrency(transaction.amount)}
       </div>
     </div>
   );

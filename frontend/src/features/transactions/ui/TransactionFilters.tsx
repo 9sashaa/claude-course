@@ -10,7 +10,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/src/shared/ui/select';
-import { useCategories } from '@/src/features/categories';
+import type { CategoryDto } from '@/src/entities/category';
 import type {
   TransactionListQuery,
   TransactionType,
@@ -21,15 +21,18 @@ const ALL = '__all__';
 interface Props {
   value: TransactionListQuery;
   onChange: (next: TransactionListQuery) => void;
+  categories: CategoryDto[];
 }
 
-export function TransactionFilters({ value, onChange }: Props) {
-  const { data: categories } = useCategories();
+export function TransactionFilters({ value, onChange, categories }: Props) {
   const hasFilters =
     !!value.type || !!value.categoryId || !!value.dateFrom || !!value.dateTo;
 
-  const update = (patch: Partial<TransactionListQuery>) =>
-    onChange({ ...value, ...patch });
+  const update = (patch: Partial<TransactionListQuery>) => {
+    const next = { ...value, ...patch };
+    if (next.dateFrom && next.dateTo && next.dateFrom > next.dateTo) return;
+    onChange(next);
+  };
 
   return (
     <div className="flex flex-wrap items-center gap-2">
@@ -60,7 +63,7 @@ export function TransactionFilters({ value, onChange }: Props) {
         </SelectTrigger>
         <SelectContent>
           <SelectItem value={ALL}>Все категории</SelectItem>
-          {(categories ?? []).map((c) => (
+          {categories.map((c) => (
             <SelectItem key={c.id} value={c.id}>
               {c.icon} {c.name}
             </SelectItem>
@@ -72,6 +75,7 @@ export function TransactionFilters({ value, onChange }: Props) {
         type="date"
         className="w-[160px]"
         value={value.dateFrom?.slice(0, 10) ?? ''}
+        max={value.dateTo?.slice(0, 10)}
         onChange={(e) =>
           update({
             dateFrom: e.target.value
@@ -84,6 +88,7 @@ export function TransactionFilters({ value, onChange }: Props) {
         type="date"
         className="w-[160px]"
         value={value.dateTo?.slice(0, 10) ?? ''}
+        min={value.dateFrom?.slice(0, 10)}
         onChange={(e) =>
           update({
             dateTo: e.target.value

@@ -4,24 +4,27 @@ import { useMemo, useState } from 'react';
 import { ChevronLeftIcon, ChevronRightIcon } from 'lucide-react';
 import { Button } from '@/src/shared/ui/button';
 import { Skeleton } from '@/src/shared/ui/skeleton';
-import { useCategories } from '@/src/features/categories';
 import type { CategoryDto } from '@/src/entities/category';
 import type { TransactionListQuery } from '@/src/entities/transaction';
 import { useTransactions } from '../model/useTransactions';
 import { TransactionItem } from './TransactionItem';
 import { TransactionFilters } from './TransactionFilters';
 
-export function TransactionList() {
+interface Props {
+  categories: CategoryDto[];
+}
+
+export function TransactionList({ categories }: Props) {
   const [filters, setFilters] = useState<TransactionListQuery>({});
   const [page, setPage] = useState(1);
   const { items, total, totalPages, isLoading, isError } = useTransactions(
     filters,
     page,
   );
-  const { data: categories } = useCategories();
+
   const categoryById = useMemo(() => {
     const map = new Map<string, CategoryDto>();
-    (categories ?? []).forEach((c) => map.set(c.id, c));
+    categories.forEach((c) => map.set(c.id, c));
     return map;
   }, [categories]);
 
@@ -32,7 +35,11 @@ export function TransactionList() {
 
   return (
     <div className="space-y-4">
-      <TransactionFilters value={filters} onChange={handleFiltersChange} />
+      <TransactionFilters
+        value={filters}
+        onChange={handleFiltersChange}
+        categories={categories}
+      />
 
       {isLoading ? (
         <div className="space-y-2">

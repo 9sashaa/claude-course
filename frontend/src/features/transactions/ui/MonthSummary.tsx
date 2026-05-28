@@ -1,36 +1,29 @@
 'use client';
 
+import { useEffect, useState } from 'react';
 import { ArrowDownIcon, ArrowUpIcon, WalletIcon } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/src/shared/ui/card';
 import { Skeleton } from '@/src/shared/ui/skeleton';
 import { cn } from '@/src/shared/lib/utils';
+import { formatCurrency } from '@/src/shared/lib/formatCurrency';
 import { useTransactionSummary } from '../model/useTransactionSummary';
 
-function formatAmount(amount: number) {
-  return new Intl.NumberFormat('ru-RU', {
-    style: 'currency',
-    currency: 'RUB',
-    maximumFractionDigits: 2,
-  }).format(amount);
-}
-
 const MONTH_NAMES = [
-  'Январь',
-  'Февраль',
-  'Март',
-  'Апрель',
-  'Май',
-  'Июнь',
-  'Июль',
-  'Август',
-  'Сентябрь',
-  'Октябрь',
-  'Ноябрь',
-  'Декабрь',
+  'Январь', 'Февраль', 'Март', 'Апрель', 'Май', 'Июнь',
+  'Июль', 'Август', 'Сентябрь', 'Октябрь', 'Ноябрь', 'Декабрь',
 ];
 
 export function MonthSummary() {
-  const now = new Date();
+  const [now, setNow] = useState(() => new Date());
+
+  useEffect(() => {
+    const msUntilMidnight =
+      new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1).getTime() -
+      now.getTime();
+    const id = setTimeout(() => setNow(new Date()), msUntilMidnight);
+    return () => clearTimeout(id);
+  }, [now]);
+
   const month = now.getMonth() + 1;
   const year = now.getFullYear();
   const { data, isLoading } = useTransactionSummary(month, year);
@@ -95,7 +88,7 @@ function SummaryCard({
           <Skeleton className="h-7 w-32" />
         ) : (
           <p className={cn('text-2xl font-semibold tabular-nums', valueClass)}>
-            {formatAmount(amount)}
+            {formatCurrency(amount)}
           </p>
         )}
       </CardContent>

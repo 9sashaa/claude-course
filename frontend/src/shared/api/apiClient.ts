@@ -40,7 +40,9 @@ async function request<T>(
   }
 
   if (res.status === 204) return undefined as T;
-  return res.json();
+  return res.json().catch(() => {
+    throw new Error('Сервер вернул некорректный ответ');
+  });
 }
 
 export const apiClient = {
