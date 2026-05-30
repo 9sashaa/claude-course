@@ -7,10 +7,10 @@ description: Generate a detailed standup report based on yesterday's git activit
 ## Context
 
 - Today's date: !`date +%Y-%m-%d`
-- Yesterday's date: !`date -v-1d +%Y-%m-%d 2>/dev/null || date -d yesterday +%Y-%m-%d`
 - Current branch: !`git branch --show-current`
-- Yesterday's commits (all branches, by git user): !`git log --all --oneline --since="yesterday 00:00" --until="today 00:00" --format="%h %ad %s%n  Branch: %D%n  Body: %b" --date=short 2>/dev/null || git log --all --oneline --after="$(date -v-1d +%Y-%m-%d) 00:00" --before="$(date +%Y-%m-%d) 00:00" --format="%h %ad %s" --date=short`
-- Detailed diff of yesterday's commits: !`git log --all --since="yesterday 00:00" --until="today 00:00" --patch --stat --date=short 2>/dev/null | head -300`
+- Yesterday's commits (all branches): !`git log --all --since=yesterday.midnight --until=today.midnight --oneline --date=short`
+- Yesterday's commits with stats: !`git log --all --since=yesterday.midnight --until=today.midnight --stat --date=short`
+- Yesterday's commits full diff: !`git log --all --since=yesterday.midnight --until=today.midnight --patch --date=short`
 
 ## Your task
 
