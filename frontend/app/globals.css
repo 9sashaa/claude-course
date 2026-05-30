@@ -1,3 +1,4 @@
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400&display=swap');
 @import "tailwindcss";
 
 @custom-variant dark (&:is(.dark *));
@@ -28,25 +29,44 @@
 }
 
 :root {
-  --radius: 0.625rem;
-  --background: oklch(1 0 0);
-  --foreground: oklch(0.145 0 0);
+  --radius: 1rem;
+
+  /* Lavender app background */
+  --background: oklch(0.96 0.018 285);
+  --foreground: oklch(0.18 0.04 285);
+
+  /* White cards */
   --card: oklch(1 0 0);
-  --card-foreground: oklch(0.145 0 0);
+  --card-foreground: oklch(0.18 0.04 285);
   --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.145 0 0);
-  --primary: oklch(0.205 0 0);
-  --primary-foreground: oklch(0.985 0 0);
-  --secondary: oklch(0.97 0 0);
-  --secondary-foreground: oklch(0.205 0 0);
-  --muted: oklch(0.97 0 0);
-  --muted-foreground: oklch(0.556 0 0);
-  --accent: oklch(0.97 0 0);
-  --accent-foreground: oklch(0.205 0 0);
+  --popover-foreground: oklch(0.18 0.04 285);
+
+  /* Violet primary */
+  --primary: oklch(0.54 0.22 285);
+  --primary-foreground: oklch(1 0 0);
+
+  /* Soft secondary */
+  --secondary: oklch(0.94 0.022 285);
+  --secondary-foreground: oklch(0.18 0.04 285);
+
+  /* Muted tones */
+  --muted: oklch(0.94 0.015 285);
+  --muted-foreground: oklch(0.55 0.04 285);
+
+  /* Pink accent */
+  --accent: oklch(0.64 0.28 350);
+  --accent-foreground: oklch(1 0 0);
+
   --destructive: oklch(0.577 0.245 27.325);
-  --border: oklch(0.922 0 0);
-  --input: oklch(0.922 0 0);
-  --ring: oklch(0.708 0 0);
+  --border: oklch(0.91 0.015 285);
+  --input: oklch(0.96 0.012 285);
+  --ring: oklch(0.54 0.22 285);
+
+  /* Gradient tokens */
+  --violet-gradient: linear-gradient(135deg, #6c4ee8 0%, #8b5cf6 100%);
+  --pink-gradient: linear-gradient(135deg, #ff4d8b 0%, #f97316 100%);
+  --green-gradient: linear-gradient(135deg, #10b981 0%, #34d399 100%);
+  --sidebar-bg: #ffffff;
 }
 
 .dark {
@@ -76,5 +96,6 @@
   }
   body {
     @apply bg-background text-foreground;
+    font-family: 'Plus Jakarta Sans', sans-serif;
   }
 }

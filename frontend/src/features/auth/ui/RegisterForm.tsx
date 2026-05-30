@@ -66,9 +66,18 @@ export function RegisterForm() {
   };
 
   return (
-    <Card className="w-full max-w-md">
-      <CardHeader>
-        <CardTitle className="text-2xl">Регистрация</CardTitle>
+    <Card
+      className="w-full max-w-md border-0"
+      style={{ boxShadow: '0 8px 40px 0 rgba(108, 78, 232, 0.14)' }}
+    >
+      <CardHeader className="pb-4">
+        <div
+          className="mb-4 flex size-12 items-center justify-center rounded-2xl"
+          style={{ background: 'var(--violet-gradient)' }}
+        >
+          <span className="text-xl">✨</span>
+        </div>
+        <CardTitle className="text-2xl font-bold tracking-tight">Регистрация</CardTitle>
         <CardDescription>Создайте новый аккаунт</CardDescription>
       </CardHeader>
       <CardContent>
@@ -79,9 +88,13 @@ export function RegisterForm() {
               name="name"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Имя</FormLabel>
+                  <FormLabel className="text-sm font-medium">Имя</FormLabel>
                   <FormControl>
-                    <Input placeholder="Иван Иванов" {...field} />
+                    <Input
+                      placeholder="Иван Иванов"
+                      className="rounded-xl border-slate-200 bg-slate-50 focus-visible:ring-violet-400"
+                      {...field}
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -92,9 +105,14 @@ export function RegisterForm() {
               name="email"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Email</FormLabel>
+                  <FormLabel className="text-sm font-medium">Email</FormLabel>
                   <FormControl>
-                    <Input placeholder="you@example.com" type="email" {...field} />
+                    <Input
+                      placeholder="you@example.com"
+                      type="email"
+                      className="rounded-xl border-slate-200 bg-slate-50 focus-visible:ring-violet-400"
+                      {...field}
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -105,9 +123,13 @@ export function RegisterForm() {
               name="password"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Пароль</FormLabel>
+                  <FormLabel className="text-sm font-medium">Пароль</FormLabel>
                   <FormControl>
-                    <Input type="password" {...field} />
+                    <Input
+                      type="password"
+                      className="rounded-xl border-slate-200 bg-slate-50 focus-visible:ring-violet-400"
+                      {...field}
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -152,7 +174,8 @@ export function RegisterForm() {
             )}
             <Button
               type="submit"
-              className="w-full"
+              className="mt-2 w-full rounded-xl border-0 font-semibold text-white"
+              style={{ background: 'var(--violet-gradient)' }}
               disabled={form.formState.isSubmitting}
             >
               {form.formState.isSubmitting ? 'Регистрируемся...' : 'Зарегистрироваться'}
@@ -163,7 +186,11 @@ export function RegisterForm() {
       <CardFooter className="justify-center">
         <p className="text-sm text-muted-foreground">
           Уже есть аккаунт?{' '}
-          <Link href={ROUTES.LOGIN} className="text-primary hover:underline">
+          <Link
+            href={ROUTES.LOGIN}
+            className="font-semibold hover:underline"
+            style={{ color: 'oklch(0.54 0.22 285)' }}
+          >
             Войти
           </Link>
         </p>

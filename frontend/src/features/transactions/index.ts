@@ -1,4 +1,5 @@
 export { TransactionList } from './ui/TransactionList';
+export { RecentTransactions } from './ui/RecentTransactions';
 export { MonthSummary } from './ui/MonthSummary';
 export { CreateTransactionDialog } from './ui/CreateTransactionDialog';
 export { useTransactions } from './model/useTransactions';
